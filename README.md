@@ -1,3 +1,3 @@
 # MyFirstRepo
 
-## Mi receta favorita: milanesas
+## Mi receta favorita: milanesas con pure.
