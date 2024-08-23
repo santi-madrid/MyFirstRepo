@@ -41,8 +41,8 @@ typedef enum {
 
 // Estructura para el mensaje que se enviará
 struct Message {
-    int type1; // Almacena si se trata de un mensaje o una respuesta
-    int type2;
+    int type; // Almacena si se trata de un mensaje o una respuesta
+    int subtype; // Almacena un subtipo que varia segun el tipo
     char message[MAX_MESSAGE_SIZE]; // Buffer para almacenar el mensaje
 
 };
@@ -78,7 +78,7 @@ void send() {
     // Selección del mensaje basado en la entrada del usuario
     switch (type) {
         case 1:
-            msg.type1=1;
+            msg.type=1;
             while (M < 1 || M > 2) {   
             printf("Ingrese una solicitud valida (0 para salir):\n");
             printf("1 --> STATUS\n");
@@ -90,18 +90,18 @@ void send() {
             switch (M)
             {
             case 1:   
-                msg.type2=1;
+                msg.subtype=1;
                 strcpy(msg.message, "Enviar STATUS."); // Configura el mensaje para STATUS
                 break;
             case 2:  
-                msg.type2=2; 
+                msg.subtype=2; 
                 strcpy(msg.message, "Enviar CONTROL."); // Configura el mensaje para STATUS
             default:
                 break;
             }
             break;
         case 2:
-            msg.type1=2;
+            msg.type=2;
             while (M < 1 || M > 2) {   
             printf("Ingrese un aviso valido (0 para salir):\n");
             printf("1 --> PELIGRO\n");
@@ -113,11 +113,11 @@ void send() {
             switch (M)
             {
             case 1:   
-                msg.type2=1;
+                msg.subtype=1;
                 strcpy(msg.message, "ESTAMOS EN PELIGRO."); // Configura el mensaje para PELIGRO
                 break;
             case 2:  
-                msg.type2=2; 
+                msg.subtype=2; 
                 strcpy(msg.message, "NECESITAMOS AYUDA."); // Configura el mensaje para AYUDA
             default:
                 break;
@@ -125,7 +125,7 @@ void send() {
             break;
         case 3:
             strcpy(msg.message, "Enviar ERROR."); // Configura el mensaje para ERROR
-            msg.type1=3;
+            msg.type=3;
 
             break;
     }
