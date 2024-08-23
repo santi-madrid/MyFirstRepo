@@ -118,9 +118,9 @@ void receive() {
         {
         case 0:
             int aux;
-            printf("Indicar estado en el que se encuentran.");
-            printf("1-->BIEN");
-            printf("2-->MAL");
+            printf("Indicar estado en el que se encuentran.\n");
+            printf("1-->BIEN\n");
+            printf("2-->MAL\n");
             scanf("%d",aux);
             switch (aux)
             {
@@ -135,9 +135,9 @@ void receive() {
             }
             break;
         case 1:
-            printf("Indicar como se encuentra el control de la zona");
-            printf("1-->BIEN");
-            printf("2-->MAL");
+            printf("Indicar como se encuentra el control de la zona\n");
+            printf("1-->BIEN\n");
+            printf("2-->MAL\n");
             scanf("%d",aux);
             switch (aux)
             {
