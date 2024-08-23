@@ -95,6 +95,8 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
                 break;
             case 2:  
                 msg.subtipo=1; 
+                printf("INGRESE DESCRIPCION DE AYUDA REQUERIDA: \n");
+                scanf("%s",&msg.note);
                 strcpy(msg.message, "NECESITAMOS AYUDA."); // Configura el mensaje para AYUDA
             default:
                 break;
@@ -114,14 +116,14 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
 // Función para recibir y procesar una respuesta
 void receive() {
 printf("COMIENZA FUNCION RECIBIR---------------\n");
-
+    int aux;
     switch (msg.tipo)
     {
     case 0:
         switch (msg.subtipo)
         {
         case 0:
-            int aux;
+            
             printf("Indicar estado en el que se encuentran.\n");
             printf("1-->BIEN\n");
             printf("2-->MAL\n");
@@ -163,13 +165,15 @@ printf("COMIENZA FUNCION RECIBIR---------------\n");
         switch (msg.subtipo)
         {
         case 0:
-            printf("RECIBIMOS UN AVISO DE NUESTROS ALIADOS: ");
+            printf("RECIBIMOS UN AVISO DE NUESTROS ALIADOS: \n");
             printf(msg.message);
             break;
         case 1:
             int aux=0;
             printf("RECIBIMOS UN AVISO DE NUESTROS ALIADOS: \n");
             printf(msg.message );
+            printf("\n NOTA:");
+            printf(msg.note);
             while(aux<1||aux>2){
                 printf("INGRESE SI ESTAMOS EN CONDICIONES DE ENVIAR AYUDA\n");
                 printf("1--> ENVIAR AYUDA\n");
