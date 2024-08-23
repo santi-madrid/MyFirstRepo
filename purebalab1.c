@@ -37,6 +37,8 @@ int main() {
 
 // Función para enviar un mensaje
 void send() {
+printf("COMIENZA FUNCION ENVIAR -------------\n");
+
     int type =0;         
 
     while (type < 1||type >2) {   
@@ -111,6 +113,8 @@ void send() {
 
 // Función para recibir y procesar una respuesta
 void receive() {
+printf("COMIENZA FUNCION RECIBIR---------------\n");
+
     switch (msg.tipo)
     {
     case 0:
@@ -121,7 +125,7 @@ void receive() {
             printf("Indicar estado en el que se encuentran.\n");
             printf("1-->BIEN\n");
             printf("2-->MAL\n");
-            scanf("%d",aux);
+            scanf("%d\n",aux);
             switch (aux)
             {
             case 1:
@@ -138,7 +142,7 @@ void receive() {
             printf("Indicar como se encuentra el control de la zona\n");
             printf("1-->BIEN\n");
             printf("2-->MAL\n");
-            scanf("%d",aux);
+            scanf("%d\n",aux);
             switch (aux)
             {
             case 1:
@@ -155,14 +159,38 @@ void receive() {
             break;
         }
         break;
+    case 1:
+        switch (msg.subtipo)
+        {
+        case 0:
+            printf("RECIBIMOS UN AVISO DE NUESTROS ALIADOS: ");
+            printf(msg.message);
+            break;
+        case 1:
+            int aux=0;
+            printf("RECIBIMOS UN AVISO DE NUESTROS ALIADOS: \n");
+            printf(msg.message );
+            while(aux<1||aux>2){
+                printf("INGRESE SI ESTAMOS EN CONDICIONES DE ENVIAR AYUDA\n");
+                printf("1--> ENVIAR AYUDA\n");
+                printf("2--> IMPOSIBLE AYUDAR EN ESTE MOMENTO\n");
+                scanf("%s",&aux);
+            }
+            
+
+
+            break;
+        default:
+            break;
+        }
     default:
         break;
-    }; // Variable para almacenar la respuesta recibida
+    }; 
+
+    printf("%s\n", msg.message);
 
 }
 
+void write(){
 
-
-
-
-
+}
