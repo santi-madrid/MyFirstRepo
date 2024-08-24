@@ -15,21 +15,21 @@
 // Estructura para el mensaje que se enviará
 typedef struct{
     unsigned int error : 1 ; //Indica si hubo un error en la comunicacion con un 1
-    unsigned int tipo : 1 ; //Guarda un 0 si es un mensaje de solicitud y un  si es un mensaje de aviso
+    unsigned int tipo : 2 ; //Guarda un 0 si es un mensaje de solicitud y un  si es un mensaje de aviso
     unsigned int subtipo : 1; //Guarda un 0 o un 1 segun los diferentes subtipos correspondientes al primer tipo
     char message[MAX_MESSAGE_SIZE]; // Buffer para almacenar el mensaje
-    char note[MAX_MESSAGE_SIZE]; // Buffer para almacenar una nota ligada al mensaje
 } Mensaje;
 
 // Declaración de las funciones para enviar y recibir mensajes
 void send(void);
 void receive(void);
 
+
 Mensaje msg;
 
 // Función principal del programa
 int main() {
-    Mensaje msg = {0,0,0,"",""};   // Variable para almacenar el mensaje
+    static Mensaje msg = {0,0,0,""};   // Variable para almacenar el mensaje
     send();   // Llama a la función para enviar un mensaje
     receive(); // Llama a la función para recibir una respuesta
     return 0; // Finaliza la ejecución del programa
@@ -38,14 +38,14 @@ int main() {
 // Función para enviar un mensaje
 void send() {
 printf("COMIENZA FUNCION ENVIAR -------------\n");
-
     int type =0;         
 
-    while (type < 1||type >3) {   
+    while (type < 1||type >4) {   
         printf("Ingrese tipo de mensaje que quiere enviar (0 para salir):\n");
         printf("1 --> SOLICITUD\n");
-        printf("2 --> AVISO\n");
-        printf("3--> ERROR\n"); //Error en la comunicacion
+        printf("2 --> INFORMACION\n");
+        printf("3 --> AVISO\n");
+        printf("4--> ERROR\n"); //Error en la comunicacion
         scanf("%d", &type);
         // Opción de salida del programa
         if (type == 0) return; 
@@ -79,6 +79,62 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
             break;
         case 2:
             msg.tipo=1;
+            int aux =0;
+            S=0;
+            while (S < 1 || S > 2) {   
+            printf("Ingrese una solicitud valida (0 para salir):\n");
+            printf("1 --> STATUS\n");
+            printf("2 --> CONTROL\n");
+            scanf("%d", &S);
+            // Opción de salida del programa
+            if (S == 0) return; 
+            }
+            switch (S)
+            {
+            case 1:
+                while(aux<1||aux>2){
+                printf("Indicar estado en el que se encuentran.\n");
+                printf("1-->BIEN\n");
+                printf("2-->MAL\n");
+                scanf("%d",&aux);
+                }
+                switch (aux)
+                {
+                case 1:
+                strcpy(msg.message, "INFORMACION DE STATUS: SIN PROBLEMAS.\n");
+                break;
+                case 2:
+                strcpy(msg.message, "INFORMACION DE STATUS: ESTAMOS EN PROBLEMAS.\n");
+                break;
+                default:
+                break;
+                }
+                break;
+            case 2:
+                printf("Indicar como se encuentra el control de la zona\n");
+                printf("1-->BIEN\n");
+                printf("2-->MAL\n");
+                scanf("%d",&aux);
+                switch (aux)
+                {
+                case 1:
+                    strcpy(msg.message, "TODO DESPEJADO\n");
+                    break;
+                case 2:
+                    strcpy(msg.message, "ENEMIGOS AVISTADOS\n");
+                    break;
+                default:
+                    break;
+                }
+                break;
+                    break;
+                default:
+                    break;
+                }
+            break;
+            break;
+        case 3:
+            msg.tipo=2;
             while (S < 1 || S > 2) {   
             printf("Ingrese un aviso valido (0 para salir):\n");
             printf("1 --> PELIGRO\n");
@@ -95,21 +151,19 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
                 break;
             case 2:  
                 msg.subtipo=1;
-                printf("INGRESE DESCRIPCION DE AYUDA REQUERIDA (sin espacios): \n");
-                scanf("%s[^\n]",&msg.note);
                 strcpy(msg.message, "NECESITAMOS AYUDA."); // Configura el mensaje para AYUDA
             default:
                 break;
             }
             break;
-        case 3:
+        case 4:
             strcpy(msg.message, "Enviar ERROR."); // Configura el mensaje para ERROR
             msg.error=1;
             break;
     }
 
     // Muestra el mensaje que se ha configurado para ser enviado
-    printf("ENVIANDO MENSAJSE : "); 
+    printf("ENVIANDO MENSAJE : "); 
     printf("%s\n", msg.message); 
 }
 
@@ -120,71 +174,7 @@ printf("\nCOMIENZA FUNCION RECIBIR---------------\n\n");
     if(msg.error==1){
         printf("ERROR EN LA COMUNICACION.\n");
     }else{
-    switch (msg.tipo)
-    {
-    case 0:
-        switch (msg.subtipo)
-        {
-        case 0:
-            while(aux<1||aux>2){
-            printf("Indicar estado en el que se encuentran.\n");
-            printf("1-->BIEN\n");
-            printf("2-->MAL\n");
-            scanf("%d",&aux);
-            }
-            switch (aux)
-            {
-            case 1:
-                strcpy(msg.message, "SIN PROBLEMAS.\n");
-                break;
-            case 2:
-                strcpy(msg.message, "ESTAMOS EN PROBLEMAS.\n");
-                break;
-            default:
-                break;
-            }
-            break;
-        case 1:
-
-            printf("Indicar como se encuentra el control de la zona\n");
-            printf("1-->BIEN\n");
-            printf("2-->MAL\n");
-            scanf("%d",&aux);
-            switch (aux)
-            {
-            case 1:
-                strcpy(msg.message, "TODO DESPEJADO\n");
-                break;
-            case 2:
-                strcpy(msg.message, "ENEMIGOS AVISTADOS\n");
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
-        break;
-    case 1:
-        switch (msg.subtipo)
-        {
-        case 0:
-            printf("RECIBIMOS UN AVISO DE NUESTROS ALIADOS: \n");
-            printf(msg.message);
-            break;
-        case 1:
-            int aux=0;
-            printf("RECIBIMOS UN AVISO DE NUESTROS ALIADOS: \n");
-            printf(msg.message );
-            printf("\n NOTA:");
-            printf(msg.note);     
-            break;
-        default:
-            break;
-        }
-    default:
-        break;
-    }; 
+    printf("RECIBIMOS UN MENSAJE DE NUESTROS ALIADOS: \n");
+    printf("%s\n", msg.message);
     }
 }
