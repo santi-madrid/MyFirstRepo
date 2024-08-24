@@ -2,11 +2,10 @@
  * @file main.c
  * @brief Main file for the project
  *
- * Este archivo contiene la implementación principal de un programa que gestiona el envío y la recepción de mensajes. 
- * Se define una estructura de mensaje y se proporcionan funciones para enviar y recibir mensajes, con opciones 
+ * Este archivo contiene la implementación principal de un programa que gestiona el envío y la recepción de mensajes.
+ * Se define una estructura de mensaje y se proporcionan funciones para enviar y recibir mensajes, con opciones
  * para especificar y mostrar distintos tipos de mensajes y respuestas.
  */
-
 #include <stdio.h>
 #include <string.h>
 
@@ -14,22 +13,22 @@
 #define MAX_MESSAGE_SIZE 256
 
 // Estructura para el mensaje que se enviará
-struct Message {
-    unsigned int esRespuesta : 1 ; //Guarda un 0 si el mensaje no responde a otro y un 1 si respode a otro
+typedef struct{
     unsigned int tipo : 1 ; //Guarda un 0 si es un mensaje de solicitud y un  si es un mensaje de aviso
     unsigned int subtipo : 1; //Guarda un 0 o un 1 segun los diferentes subtipos correspondientes al primer tipo
     char message[MAX_MESSAGE_SIZE]; // Buffer para almacenar el mensaje
     char note[MAX_MESSAGE_SIZE]; // Buffer para almacenar una nota ligada al mensaje
-};
+} Mensaje;
 
 // Declaración de las funciones para enviar y recibir mensajes
 void send(void);
 void receive(void);
 
-struct Message msg;   // Variable para almacenar el mensaje
+static Mensaje msg = {0,0,"",""};   // Variable para almacenar el mensaje
 
 // Función principal del programa
 int main() {
+    
     send();   // Llama a la función para enviar un mensaje
     receive(); // Llama a la función para recibir una respuesta
     return 0; // Finaliza la ejecución del programa
@@ -94,9 +93,9 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
                 strcpy(msg.message, "ESTAMOS EN PELIGRO."); // Configura el mensaje para PELIGRO
                 break;
             case 2:  
-                msg.subtipo=1; 
-                printf("INGRESE DESCRIPCION DE AYUDA REQUERIDA: \n");
-                scanf("%s",&msg.note);
+                msg.subtipo=1;
+                printf("INGRESE DESCRIPCION DE AYUDA REQUERIDA (sin espacios): \n");
+                scanf("%s[^\n]",&msg.note);
                 strcpy(msg.message, "NECESITAMOS AYUDA."); // Configura el mensaje para AYUDA
             default:
                 break;
@@ -175,14 +174,7 @@ printf("COMIENZA FUNCION RECIBIR---------------\n");
             printf("RECIBIMOS UN AVISO DE NUESTROS ALIADOS: \n");
             printf(msg.message );
             printf("\n NOTA:");
-            printf(msg.note);
-            while(aux<1||aux>2){
-                printf("INGRESE SI ESTAMOS EN CONDICIONES DE ENVIAR AYUDA\n");
-                printf("1--> ENVIAR AYUDA\n");
-                printf("2--> IMPOSIBLE AYUDAR EN ESTE MOMENTO\n");
-                scanf("%d",&aux);
-            }
-        
+            printf(msg.note);     
             break;
         default:
             break;
