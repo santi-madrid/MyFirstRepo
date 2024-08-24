@@ -8,7 +8,6 @@
  */
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
 
 // Definición de tamaño máximo para el mensaje
 #define MAX_MESSAGE_SIZE 256
@@ -26,7 +25,7 @@ void send(void);
 void receive(void);
 void log(Mensaje *msg);
 
-
+static unsigned int mode;
 Mensaje msg = {0,0,0,""};
 
 // Función principal del programa
@@ -38,6 +37,7 @@ int main() {
 
 // Función para enviar un mensaje
 void send() {
+    mode = 0;
 printf("COMIENZA FUNCION ENVIAR -------------\n");
     int type =0;
     while (type < 1||type >4) {   
@@ -162,6 +162,7 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
             break;
     }
 
+    log(&msg);
     // Muestra el mensaje que se ha configurado para ser enviado
     printf("ENVIANDO MENSAJE : "); 
     printf("%s\n", msg.message); 
@@ -170,14 +171,16 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
 
 // Función para recibir y procesar una respuesta
 void receive() {
+    mode = 1;
 printf("\nCOMIENZA FUNCION RECIBIR---------------\n\n");
     int aux=0;
     if(msg.error==1){
         printf("ERROR EN LA COMUNICACION.\n");
+        log(&msg);
     }else{
-    printf("RECIBIMOS UN MENSAJE DE NUESTROS ALIADOS: \n");
-    printf("%s\n", msg.message);
-    log(&msg);
+        printf("RECIBIMOS UN MENSAJE DE NUESTROS ALIADOS: \n");
+        printf("%s\n", msg.message);
+        log(&msg);
     }
 }
 
@@ -187,8 +190,21 @@ void log(Mensaje *msg){
         perror("No se pudo abrir el archivo de log");
         return;
     }
-    fprintf(f,"Mensaje: %s\n",msg->message);
-    
+    switch (mode)
+    {
+    case 0:
+        fprintf(f,"---------------------------------------------------\n\n");
+        fprintf(f,"[Mensaje enviado]: %s\n\n",msg->message);
+        fprintf(f,"---------------------------------------------------\n\n");
+        break;
+    case 1:
+        fprintf(f,"---------------------------------------------------\n\n");
+        fprintf(f,"[Mensaje recibido]: %s\n\n",msg->message);
+        fprintf(f,"---------------------------------------------------\n\n");
+        break;
+    default:
+        break;
+    }
     fclose(f);
 }
 
