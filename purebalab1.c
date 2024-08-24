@@ -14,6 +14,7 @@
 
 // Estructura para el mensaje que se enviará
 typedef struct{
+    unsigned int error : 1 ; //Indica si hubo un error en la comunicacion con un 1
     unsigned int tipo : 1 ; //Guarda un 0 si es un mensaje de solicitud y un  si es un mensaje de aviso
     unsigned int subtipo : 1; //Guarda un 0 o un 1 segun los diferentes subtipos correspondientes al primer tipo
     char message[MAX_MESSAGE_SIZE]; // Buffer para almacenar el mensaje
@@ -24,11 +25,11 @@ typedef struct{
 void send(void);
 void receive(void);
 
-static Mensaje msg = {0,0,"",""};   // Variable para almacenar el mensaje
+Mensaje msg;
 
 // Función principal del programa
 int main() {
-    
+    Mensaje msg = {0,0,0,"",""};   // Variable para almacenar el mensaje
     send();   // Llama a la función para enviar un mensaje
     receive(); // Llama a la función para recibir una respuesta
     return 0; // Finaliza la ejecución del programa
@@ -40,7 +41,7 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
 
     int type =0;         
 
-    while (type < 1||type >2) {   
+    while (type < 1||type >3) {   
         printf("Ingrese tipo de mensaje que quiere enviar (0 para salir):\n");
         printf("1 --> SOLICITUD\n");
         printf("2 --> AVISO\n");
@@ -103,19 +104,22 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
             break;
         case 3:
             strcpy(msg.message, "Enviar ERROR."); // Configura el mensaje para ERROR
-            msg.tipo=2;
-
+            msg.error=1;
             break;
     }
 
     // Muestra el mensaje que se ha configurado para ser enviado
+    printf("ENVIANDO MENSAJSE : "); 
     printf("%s\n", msg.message); 
 }
 
 // Función para recibir y procesar una respuesta
 void receive() {
-printf("COMIENZA FUNCION RECIBIR---------------\n");
+printf("\nCOMIENZA FUNCION RECIBIR---------------\n\n");
     int aux=0;
+    if(msg.error==1){
+        printf("ERROR EN LA COMUNICACION.\n");
+    }else{
     switch (msg.tipo)
     {
     case 0:
@@ -182,7 +186,5 @@ printf("COMIENZA FUNCION RECIBIR---------------\n");
     default:
         break;
     }; 
-
-    printf("%s\n", msg.message);
-
+    }
 }
