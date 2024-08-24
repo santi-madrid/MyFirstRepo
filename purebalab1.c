@@ -142,10 +142,11 @@ printf("COMIENZA FUNCION RECIBIR---------------\n \n");
             }
             break;
         case 1:
+
             printf("Indicar como se encuentra el control de la zona\n");
             printf("1-->BIEN\n");
             printf("2-->MAL\n");
-            scanf("%d\n",aux);
+            scanf("%d\n",&aux);
             switch (aux)
             {
             case 1:
@@ -181,9 +182,7 @@ printf("COMIENZA FUNCION RECIBIR---------------\n \n");
                 printf("2--> IMPOSIBLE AYUDAR EN ESTE MOMENTO\n");
                 scanf("%s",&aux);
             }
-            
-
-
+        
             break;
         default:
             break;
@@ -193,9 +192,5 @@ printf("COMIENZA FUNCION RECIBIR---------------\n \n");
     }; 
 
     printf("%s\n", msg.message);
-
-}
-
-void write(){
 
 }
