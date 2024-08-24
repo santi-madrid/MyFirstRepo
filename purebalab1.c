@@ -115,7 +115,7 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
 
 // Función para recibir y procesar una respuesta
 void receive() {
-printf("COMIENZA FUNCION RECIBIR---------------\n \n");
+printf("COMIENZA FUNCION RECIBIR---------------\n");
     int aux=0;
     switch (msg.tipo)
     {
@@ -127,7 +127,7 @@ printf("COMIENZA FUNCION RECIBIR---------------\n \n");
             printf("Indicar estado en el que se encuentran.\n");
             printf("1-->BIEN\n");
             printf("2-->MAL\n");
-            scanf("%d\n",&aux);
+            scanf("%d",&aux);
             }
             switch (aux)
             {
@@ -146,7 +146,7 @@ printf("COMIENZA FUNCION RECIBIR---------------\n \n");
             printf("Indicar como se encuentra el control de la zona\n");
             printf("1-->BIEN\n");
             printf("2-->MAL\n");
-            scanf("%d\n",&aux);
+            scanf("%d",&aux);
             switch (aux)
             {
             case 1:
@@ -180,7 +180,7 @@ printf("COMIENZA FUNCION RECIBIR---------------\n \n");
                 printf("INGRESE SI ESTAMOS EN CONDICIONES DE ENVIAR AYUDA\n");
                 printf("1--> ENVIAR AYUDA\n");
                 printf("2--> IMPOSIBLE AYUDAR EN ESTE MOMENTO\n");
-                scanf("%s",&aux);
+                scanf("%d",&aux);
             }
         
             break;
