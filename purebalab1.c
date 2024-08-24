@@ -115,19 +115,20 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
 
 // Función para recibir y procesar una respuesta
 void receive() {
-printf("COMIENZA FUNCION RECIBIR---------------\n");
-    int aux;
+printf("COMIENZA FUNCION RECIBIR---------------\n \n");
+    int aux=0;
     switch (msg.tipo)
     {
     case 0:
         switch (msg.subtipo)
         {
         case 0:
-            
+            while(aux<1||aux>2){
             printf("Indicar estado en el que se encuentran.\n");
             printf("1-->BIEN\n");
             printf("2-->MAL\n");
-            scanf("%d\n",aux);
+            scanf("%d\n",&aux);
+            }
             switch (aux)
             {
             case 1:
