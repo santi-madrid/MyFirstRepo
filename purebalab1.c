@@ -8,6 +8,7 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 // Definición de tamaño máximo para el mensaje
 #define MAX_MESSAGE_SIZE 256
@@ -23,13 +24,13 @@ typedef struct{
 // Declaración de las funciones para enviar y recibir mensajes
 void send(void);
 void receive(void);
+void log(Mensaje *msg);
 
 
-Mensaje msg;
+Mensaje msg = {0,0,0,""};
 
 // Función principal del programa
 int main() {
-    static Mensaje msg = {0,0,0,""};   // Variable para almacenar el mensaje
     send();   // Llama a la función para enviar un mensaje
     receive(); // Llama a la función para recibir una respuesta
     return 0; // Finaliza la ejecución del programa
@@ -38,8 +39,7 @@ int main() {
 // Función para enviar un mensaje
 void send() {
 printf("COMIENZA FUNCION ENVIAR -------------\n");
-    int type =0;         
-
+    int type =0;
     while (type < 1||type >4) {   
         printf("Ingrese tipo de mensaje que quiere enviar (0 para salir):\n");
         printf("1 --> SOLICITUD\n");
@@ -165,6 +165,7 @@ printf("COMIENZA FUNCION ENVIAR -------------\n");
     // Muestra el mensaje que se ha configurado para ser enviado
     printf("ENVIANDO MENSAJE : "); 
     printf("%s\n", msg.message); 
+
 }
 
 // Función para recibir y procesar una respuesta
@@ -176,5 +177,21 @@ printf("\nCOMIENZA FUNCION RECIBIR---------------\n\n");
     }else{
     printf("RECIBIMOS UN MENSAJE DE NUESTROS ALIADOS: \n");
     printf("%s\n", msg.message);
+    log(&msg);
     }
+}
+
+void log(Mensaje *msg){
+    FILE *f = fopen("log.txt","a+");
+    if (f == NULL) {
+        perror("No se pudo abrir el archivo de log");
+        return;
+    }
+    fprintf(f,"Mensaje: %s\n",msg->message);
+    
+    fclose(f);
+}
+
+void resetMsg(Mensaje *msg){
+    
 }
